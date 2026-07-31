@@ -28,4 +28,4 @@ Publiczny cennik z wyszukiwarką i panelem administratora. Administrator może d
 Projekt można opublikować na Cloudflare Pages, Netlify lub innym hostingu obsługującym Vite.
 
 ## Ważne
-Przed publikacją zmień przykładowy numer telefonu w `src/main.js`.
+Przed publikacją zmień przykładowy numer telefonu w `src/main.js`.  
