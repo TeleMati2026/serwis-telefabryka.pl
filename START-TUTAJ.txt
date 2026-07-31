@@ -1,0 +1,36 @@
+SERWIS TELEFABRYKA — URUCHOMIENIE
+=================================
+
+Projekt jest kompletny. GitHub Pages publikuje go bez kompilacji.
+Do wspólnego zapisywania cen potrzebna jest darmowa baza Supabase.
+
+1. Wgraj do głównego katalogu GitHuba wszystkie pliki z tej paczki.
+2. GitHub: Settings > Pages > Deploy from a branch > main > /(root) > Save.
+3. Załóż projekt na https://supabase.com
+4. Supabase: SQL Editor > New query. Otwórz plik supabase.sql, zmień
+   TWOJ-EMAIL@PRZYKLAD.PL na swój prawdziwy e-mail administratora,
+   wklej cały kod i kliknij Run.
+5. Supabase: Authentication > Users > Add user > Create new user.
+   Użyj dokładnie tego samego e-maila co w supabase.sql i ustaw hasło.
+6. Supabase: Project Settings > API. Skopiuj:
+   - Project URL
+   - anon public key (lub Publishable key)
+7. Na GitHubie otwórz config.js > ołówek Edit i wklej wartości:
+
+window.TELEFABRYKA_CONFIG = {
+  SUPABASE_URL: "TU_PROJECT_URL",
+  SUPABASE_ANON_KEY: "TU_ANON_KEY"
+};
+
+8. Kliknij Commit changes. Po 1–3 minutach odśwież stronę.
+9. Kliknij Panel administratora i zaloguj się.
+
+Administrator może:
+- dodawać pozycje,
+- edytować markę, model, usługę, opis i cenę,
+- ukrywać pozycje,
+- usuwać pozycje.
+Klienci mają wyłącznie odczyt widocznych pozycji.
+
+WAŻNE: anon key jest przeznaczony do używania w przeglądarce. Ochronę zapewniają
+reguły RLS zawarte w supabase.sql. Nie wklejaj service_role key.

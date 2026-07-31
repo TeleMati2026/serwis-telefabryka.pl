@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Serwis Telefabryka — internetowy cennik napraw telefonów.">
+  <title>Serwis Telefabryka — Cennik</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script defer src="config.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="Serwis Telefabryka">
+      <span class="brand-logo">T</span>
+      <span><strong>Serwis Telefabryka</strong><small>Cennik napraw GSM</small></span>
+    </a>
+    <button id="adminButton" class="button button-ghost">Panel administratora</button>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div>
+        <span class="eyebrow">Szybka wycena online</span>
+        <h1>Sprawdź orientacyjny koszt naprawy telefonu</h1>
+        <p>Wyszukaj model lub usługę. Ostateczna wycena może zależeć od wersji urządzenia i rodzaju części.</p>
+      </div>
+      <div class="signature" aria-label="Autor aplikacji">
+        <span>Designed &amp; Developed by</span>
+        <strong>Mateusz Orczy</strong>
+        <small>Web Application Developer</small>
+      </div>
+    </section>
+
+    <section class="toolbar" aria-label="Wyszukiwanie cennika">
+      <label class="search-box">
+        <span>⌕</span>
+        <input id="searchInput" type="search" placeholder="Szukaj: iPhone 13, bateria, ekran…">
+      </label>
+      <select id="brandFilter" aria-label="Filtr marki"><option value="">Wszystkie marki</option></select>
+    </section>
+
+    <div id="statusBanner" class="status hidden"></div>
+    <section id="priceList" class="cards" aria-live="polite"></section>
+    <section id="emptyState" class="empty hidden"><h2>Brak wyników</h2><p>Zmień wyszukiwaną frazę lub filtr marki.</p></section>
+  </main>
+
+  <footer>
+    <strong>Serwis Telefabryka</strong>
+    <span>Designed &amp; Developed by Mateusz Orczy</span>
+  </footer>
+
+  <dialog id="loginDialog" class="modal">
+    <form id="loginForm" class="modal-card">
+      <button type="button" class="modal-close" data-close="loginDialog" aria-label="Zamknij">×</button>
+      <span class="eyebrow">Administrator</span>
+      <h2>Logowanie do panelu</h2>
+      <label>E-mail<input id="loginEmail" type="email" required autocomplete="username"></label>
+      <label>Hasło<input id="loginPassword" type="password" required autocomplete="current-password"></label>
+      <p id="loginError" class="form-error"></p>
+      <button class="button button-primary" type="submit">Zaloguj się</button>
+    </form>
+  </dialog>
+
+  <dialog id="adminDialog" class="modal modal-wide">
+    <section class="modal-card admin-card">
+      <button type="button" class="modal-close" data-close="adminDialog" aria-label="Zamknij">×</button>
+      <div class="admin-head">
+        <div><span class="eyebrow">Panel administratora</span><h2>Zarządzanie cennikiem</h2><p id="adminEmail"></p></div>
+        <div class="admin-actions"><button id="newItemButton" class="button button-primary">+ Dodaj pozycję</button><button id="logoutButton" class="button button-ghost">Wyloguj</button></div>
+      </div>
+      <div class="table-wrap">
+        <table><thead><tr><th>Marka / model</th><th>Usługa</th><th>Cena</th><th>Status</th><th>Akcje</th></tr></thead><tbody id="adminRows"></tbody></table>
+      </div>
+    </section>
+  </dialog>
+
+  <dialog id="editDialog" class="modal">
+    <form id="itemForm" class="modal-card">
+      <button type="button" class="modal-close" data-close="editDialog" aria-label="Zamknij">×</button>
+      <span class="eyebrow">Edycja cennika</span><h2 id="itemFormTitle">Dodaj pozycję</h2>
+      <input id="itemId" type="hidden">
+      <div class="form-grid">
+        <label>Marka<input id="itemBrand" required maxlength="60" placeholder="np. Apple"></label>
+        <label>Model<input id="itemModel" required maxlength="100" placeholder="np. iPhone 13"></label>
+      </div>
+      <label>Usługa<input id="itemService" required maxlength="140" placeholder="np. Wymiana wyświetlacza OLED"></label>
+      <div class="form-grid">
+        <label>Cena (zł)<input id="itemPrice" required type="number" min="0" step="1" placeholder="449"></label>
+        <label>Sposób prezentacji<select id="itemPricePrefix"><option value="od">od 449 zł</option><option value="">449 zł</option><option value="około">około 449 zł</option></select></label>
+      </div>
+      <label>Opis / uwagi<textarea id="itemDescription" rows="3" maxlength="300" placeholder="np. część i montaż w cenie"></textarea></label>
+      <label class="check"><input id="itemVisible" type="checkbox" checked><span>Pozycja widoczna dla klientów</span></label>
+      <p id="itemError" class="form-error"></p>
+      <div class="form-buttons"><button type="button" class="button button-ghost" data-close="editDialog">Anuluj</button><button class="button button-primary" type="submit">Zapisz</button></div>
+    </form>
+  </dialog>
+
+  <template id="cardTemplate"><article class="price-card"><div class="card-top"><span class="tag"></span><span class="availability">Dostępna usługa</span></div><h2></h2><p class="service"></p><p class="description"></p><div class="price"></div></article></template>
+</body>
+</html>
